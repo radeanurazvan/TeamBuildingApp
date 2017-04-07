@@ -6,4 +6,7 @@
 
     <string name="create_account">Create Account</string>
     <string name="forgot_password">Forgot Password</string>
+
+    <string name="email">Email</string>
+    <string name="send">Send</string>
 </resources>

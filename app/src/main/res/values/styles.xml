@@ -22,4 +22,8 @@
         <item name="android:layout_marginRight">30dp</item>
     </style>
 
+    <style name="bgPeople">
+        <item name="android:background">@drawable/bg_people</item>
+    </style>
+
 </resources>
