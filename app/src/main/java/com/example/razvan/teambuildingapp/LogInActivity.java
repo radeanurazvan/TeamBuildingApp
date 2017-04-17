@@ -19,9 +19,13 @@ public class LogInActivity extends AppCompatActivity {
     TextView tvForgotPassword;
 
     @OnClick(R.id.tv_forgot_password)
-    public void startForgotPasswordActivity(TextView v){
-        Toast.makeText(this, "Must start Forgot Password Activity", Toast.LENGTH_SHORT).show();
+    public void startForgotPasswordActivity(){
         startActivity(new Intent(LogInActivity.this, ForgotPasswordActivity.class));
+    }
+
+    @OnClick(R.id.tv_create_account)
+    public void startCreateAccountActivity(){
+        startActivity(new Intent(LogInActivity.this, CreateAccountActivity.class));
     }
 
     @Override

@@ -21,6 +21,7 @@
         <activity
             android:name=".ForgotPasswordActivity"
             android:windowSoftInputMode="stateVisible|adjustPan" />
+        <activity android:name=".CreateAccountActivity"></activity>
     </application>
 
 </manifest>

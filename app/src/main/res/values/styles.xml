@@ -26,4 +26,23 @@
         <item name="android:background">@drawable/bg_people</item>
     </style>
 
+    <style name="textFontFamilyLight">
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+
+    <style name="textFontFamilyMedium">
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+
+
+    <style name="createAccountInput">
+        <item name="android:textColorHint">@color/colorText</item>
+        <item name="android:textColor">@color/colorText</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:background">@drawable/border_bottom</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:paddingTop">10dp</item>
+    </style>
+
 </resources>
