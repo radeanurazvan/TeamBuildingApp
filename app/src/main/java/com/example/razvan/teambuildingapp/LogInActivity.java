@@ -3,9 +3,15 @@ package com.example.razvan.teambuildingapp;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.razvan.teambuildingapp.OverviewActivityRV.EventDaysAdapter;
+import com.example.razvan.teambuildingapp.OverviewActivityRV.SampleData;
 
 import org.w3c.dom.Text;
 
@@ -15,16 +21,25 @@ import butterknife.OnClick;
 
 public class LogInActivity extends AppCompatActivity {
 
+
     @BindView(R.id.tv_forgot_password)
     TextView tvForgotPassword;
+    @BindView(R.id.btn_log_in)
+    Button btnLogIn;
+
+
+    @OnClick(R.id.btn_log_in)
+    public void startOverviewActivity() {
+        startActivity(new Intent(LogInActivity.this, OverviewActivity.class));
+    }
 
     @OnClick(R.id.tv_forgot_password)
-    public void startForgotPasswordActivity(){
+    public void startForgotPasswordActivity() {
         startActivity(new Intent(LogInActivity.this, ForgotPasswordActivity.class));
     }
 
     @OnClick(R.id.tv_create_account)
-    public void startCreateAccountActivity(){
+    public void startCreateAccountActivity() {
         startActivity(new Intent(LogInActivity.this, CreateAccountActivity.class));
     }
 
@@ -33,5 +48,8 @@ public class LogInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
         ButterKnife.bind(this);
+
     }
+
+
 }

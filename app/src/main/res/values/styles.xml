@@ -26,6 +26,10 @@
         <item name="android:background">@drawable/bg_people</item>
     </style>
 
+    <style name="bgMountains">
+        <item name="android:background">@drawable/bg_mountains</item>
+    </style>
+
     <style name="textFontFamilyLight">
         <item name="android:fontFamily">sans-serif-light</item>
     </style>
@@ -43,6 +47,14 @@
         <item name="android:background">@drawable/border_bottom</item>
         <item name="android:paddingBottom">10dp</item>
         <item name="android:paddingTop">10dp</item>
+    </style>
+
+    <style name="eventDayButton">
+        <item name="android:background">@drawable/rounded_button</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:layout_marginBottom">15dp</item>
+        <item name="android:textSize">20sp</item>
     </style>
 
 </resources>

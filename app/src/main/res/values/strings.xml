@@ -23,4 +23,8 @@
         <item>Female</item>
     </string-array>
 
+    <string name="title_morning">Good morning !</string>
+
+    <string name="btn_day_text">Day %1$s</string>
+
 </resources>

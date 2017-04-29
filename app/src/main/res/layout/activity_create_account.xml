@@ -111,8 +111,8 @@
                 android:hint="@string/password"
                 android:inputType="textPassword" />
 
-            <EditText
-                android:id="@+id/et_birthday"
+            <TextView
+                android:id="@+id/tv_birthday"
                 style="@style/createAccountInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
