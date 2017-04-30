@@ -3,17 +3,8 @@ package com.example.razvan.teambuildingapp;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.example.razvan.teambuildingapp.OverviewActivityRV.EventDaysAdapter;
-import com.example.razvan.teambuildingapp.OverviewActivityRV.SampleData;
-
-import org.w3c.dom.Text;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,7 +21,7 @@ public class LogInActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_log_in)
     public void startOverviewActivity() {
-        startActivity(new Intent(LogInActivity.this, OverviewActivity.class));
+        startActivity(new Intent(LogInActivity.this, NavigationDrawerActivity.class));
     }
 
     @OnClick(R.id.tv_forgot_password)

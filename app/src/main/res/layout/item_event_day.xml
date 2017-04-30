@@ -10,11 +10,11 @@
         android:layout_weight="1" />
 
     <Button
+        android:id="@+id/btn_day"
         style="@style/eventDayButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="3"
-        android:id="@+id/btn_day"
         android:text="Day 1" />
 
     <View

@@ -27,4 +27,19 @@
 
     <string name="btn_day_text">Day %1$s</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_navigation_drawer">Good morning!</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="home">Home</string>
+    <string name="overview">Overview</string>
+    <string name="logout">Log Out</string>
+
+    <string name="description">Description:</string>
+
+    <string name="lipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut tempus vel lectus sed convallis. Pellentesque sollicitudin mauris magna. Vivamus commodo tellus tincidunt tincidunt accumsan. Vestibulum fringilla elementum urna, eget pulvinar risus. Ut ornare convallis mauris, ut blandit felis hendrerit non. </string>
 </resources>
