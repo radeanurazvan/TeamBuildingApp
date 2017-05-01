@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.razvan.teambuildingapp.Entities.EmployeeEvent;
 import com.example.razvan.teambuildingapp.Fragments.FreeEventFragment;
 import com.example.razvan.teambuildingapp.NavigationDrawerActivity;
 import com.example.razvan.teambuildingapp.R;
@@ -25,10 +26,10 @@ import butterknife.ButterKnife;
  */
 
 public class FreeEventsAdapter extends RecyclerView.Adapter<FreeEventsAdapter.FreeEventViewHolder>{
-    private List<FreeEvent> mDataSet;
+    private List<EmployeeEvent> mDataSet;
     private NavigationDrawerActivity navigationDrawerActivity;
 
-    public FreeEventsAdapter(@NonNull List<FreeEvent> dataSet, Context context) {
+    public FreeEventsAdapter(@NonNull List<EmployeeEvent> dataSet, Context context) {
         mDataSet = dataSet;
         navigationDrawerActivity = (NavigationDrawerActivity) context;
     }
@@ -44,8 +45,8 @@ public class FreeEventsAdapter extends RecyclerView.Adapter<FreeEventsAdapter.Fr
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(FreeEventViewHolder holder, int position) {
-        FreeEvent freeEvent = mDataSet.get(position);
-        holder.bind(freeEvent, position);
+        EmployeeEvent employeeEvent = mDataSet.get(position);
+        holder.bind(employeeEvent, position);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,18 +77,18 @@ public class FreeEventsAdapter extends RecyclerView.Adapter<FreeEventsAdapter.Fr
             ButterKnife.bind(this, itemView);
         }
 
-        void bind(@NonNull FreeEvent event, int position) {
+        void bind(@NonNull EmployeeEvent event, int position) {
             Date startHour= new Date(),endHour = new Date();
             tvEventTitle.setText(event.getTitle());
             tvEventLocation.setText(event.getLocation());
             String oldstring = "2011-01-18 00:00:00.0";
             SimpleDateFormat dt = new SimpleDateFormat("k");
-            try {
-                startHour = dt.parse(event.getStarttime());
-                endHour = dt.parse(event.getEndTime());
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                startHour = dt.parse(event.getStarttime());
+//                endHour = dt.parse(event.getEndTime());
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//            }
 
 
             tvEventTime.setText("8 - 10am");

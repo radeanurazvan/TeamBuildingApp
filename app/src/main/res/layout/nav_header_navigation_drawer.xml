@@ -20,6 +20,10 @@
         android:layout_gravity="center"
         app:srcCompat="@android:drawable/sym_def_app_icon" />
 
+    <TextView
+        android:id="@+id/tv_username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 
 </LinearLayout>

@@ -1,5 +1,7 @@
 package com.example.razvan.teambuildingapp.EventDaysRV;
 
+import com.example.razvan.teambuildingapp.Entities.EventDay;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

@@ -6,9 +6,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.razvan.teambuildingapp.Entities.Event;
 import com.example.razvan.teambuildingapp.Fragments.EventFragment;
 import com.example.razvan.teambuildingapp.NavigationDrawerActivity;
 import com.example.razvan.teambuildingapp.R;
@@ -83,12 +83,7 @@ public class EventsAdapter  extends RecyclerView.Adapter<EventsAdapter.EventView
             tvEventLocation.setText(event.getLocation());
             String oldstring = "2011-01-18 00:00:00.0";
             SimpleDateFormat dt = new SimpleDateFormat("k");
-            try {
-                startHour = dt.parse(event.getStarttime());
-                endHour = dt.parse(event.getEndTime());
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+
             tvEventTime.setText("8 - 10am");
         }
     }

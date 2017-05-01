@@ -42,4 +42,7 @@
     <string name="description">Description:</string>
 
     <string name="lipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut tempus vel lectus sed convallis. Pellentesque sollicitudin mauris magna. Vivamus commodo tellus tincidunt tincidunt accumsan. Vestibulum fringilla elementum urna, eget pulvinar risus. Ut ornare convallis mauris, ut blandit felis hendrerit non. </string>
+
+    <string name="auth_failed">Authentication failed.Please check your inputs.</string>
+    <string name="minimum_password">Password too short, enter minimum 6 characters!</string>
 </resources>

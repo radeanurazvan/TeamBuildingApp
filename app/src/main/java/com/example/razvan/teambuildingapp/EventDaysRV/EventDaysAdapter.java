@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.razvan.teambuildingapp.Entities.EventDay;
 import com.example.razvan.teambuildingapp.Fragments.EventDayFragment;
 import com.example.razvan.teambuildingapp.NavigationDrawerActivity;
 import com.example.razvan.teambuildingapp.R;

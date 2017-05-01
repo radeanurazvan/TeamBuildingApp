@@ -44,7 +44,7 @@
                 android:textSize="16sp" />
 
             <ImageView
-                android:id="@+id/ico_check"
+                android:id="@+id/ico_submit"
                 android:layout_width="wrap_content"
                 android:layout_height="16sp"
                 android:layout_alignParentEnd="true"
@@ -146,6 +146,14 @@
                 android:layout_height="0dp"
                 android:layout_weight="1" />
 
+            <ProgressBar
+                android:id="@+id/pb_register_loading"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center|bottom"
+                android:layout_marginBottom="20dp"
+                android:visibility="gone"/>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -171,6 +179,8 @@
                     android:textColor="@color/colorText" />
 
             </LinearLayout>
+
+
 
 
         </LinearLayout>
