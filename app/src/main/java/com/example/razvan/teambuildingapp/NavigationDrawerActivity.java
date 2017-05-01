@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.example.razvan.teambuildingapp.Entities.EventDay;
 import com.example.razvan.teambuildingapp.Entities.User;
 import com.example.razvan.teambuildingapp.Fragments.OverviewFragment;
 import com.example.razvan.teambuildingapp.Fragments.SettingsFragment;
@@ -31,6 +32,9 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -158,7 +162,27 @@ public class NavigationDrawerActivity extends AppCompatActivity
     }
 
     private void setUpRecyclerView() {
-        mAdapter = new EventDaysAdapter(SampleData.generateSampleEventDaysList(), this);
+        final List<EventDay> mDataSet = new ArrayList<>();
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference("eventDays");
+        database.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot eventDaySnapshot: dataSnapshot.getChildren()) {
+                    // TODO: handle the
+                    EventDay eventDay = eventDaySnapshot.getValue(EventDay.class);
+                    Log.i(TAG, "eventDaySnapshot:"+eventDay);
+                    mDataSet.add(eventDay);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+                // ...
+            }
+        });
+        mAdapter = new EventDaysAdapter(mDataSet, this);
         recyclerViewEventDays.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewEventDays.setAdapter(mAdapter);
     }
