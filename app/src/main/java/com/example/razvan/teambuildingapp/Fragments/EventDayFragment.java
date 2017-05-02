@@ -6,33 +6,54 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.razvan.teambuildingapp.Entities.Event;
+import com.example.razvan.teambuildingapp.Entities.EventDay;
 import com.example.razvan.teambuildingapp.EventsRV.EventsAdapter;
 import com.example.razvan.teambuildingapp.EventsRV.SampleData;
 import com.example.razvan.teambuildingapp.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class EventDayFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_DAYKEY = "daykey";
     private static final String ARG_DAYNUMBER = "daynumber";
+    private static final String TAG = "EVENT_DAY_FRAGMENT";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private String dayKey;
+    private int dayNumber;
+
+    private EventDay mEventDay;
 
     private EventsAdapter mAdapter;
+    private FirebaseDatabase mDatabase;
 
+    @BindView(R.id.pb_event_day_loading)
+    ProgressBar pbEventDayLoading;
+    @BindView(R.id.tv_event_day_weekday)
+    TextView tvEventDayWeekday;
+    @BindView(R.id.tv_event_day_date)
+    TextView tvEventDayDate;
     @BindView(R.id.tv_day_count)
     TextView tvDayCount;
 
@@ -47,17 +68,16 @@ public class EventDayFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     * @param dayKey    Day Unique Key.
+     * @param dayNumber Day Number.
      * @return A new instance of fragment EventDayFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static EventDayFragment newInstance(String param1, String param2, String dayNumber) {
+    public static EventDayFragment newInstance(String dayKey, int dayNumber) {
         EventDayFragment fragment = new EventDayFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        args.putString(ARG_DAYNUMBER, dayNumber);
+        args.putString(ARG_DAYKEY, dayKey);
+        args.putInt(ARG_DAYNUMBER, dayNumber);
         fragment.setArguments(args);
         return fragment;
     }
@@ -65,9 +85,10 @@ public class EventDayFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mDatabase = FirebaseDatabase.getInstance();
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            dayKey = getArguments().getString(ARG_DAYKEY);
+            dayNumber = getArguments().getInt(ARG_DAYNUMBER);
         }
     }
 
@@ -77,19 +98,18 @@ public class EventDayFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_event_day, container, false);
         ButterKnife.bind(this, view);
-        tvDayCount.setText(getArguments().getString(ARG_DAYNUMBER));
-        setUpRecyclerView();
+
+        int dayNumber = getArguments().getInt(ARG_DAYNUMBER);
+        tvDayCount.setText("Day " + Integer.toString(dayNumber));
+        getEventDayData();
+        initRecyclerView();
         return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-    }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
     }
 
     @Override
@@ -97,10 +117,67 @@ public class EventDayFragment extends Fragment {
         super.onDetach();
     }
 
+    private void getEventDayData() {
+        final Context activityContext = this.getContext();
 
-    private void setUpRecyclerView() {
-        mAdapter = new EventsAdapter(SampleData.generateSampleEventList(), this.getContext());
+        DatabaseReference ref = mDatabase.getReference("eventDays/" + dayKey);
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                    // TODO: handle the
+                    mEventDay = dataSnapshot.getValue(EventDay.class);
+                    setViews();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting EventDay failed, log a message
+                Log.w(TAG, "loadEventDay:onCancelled", databaseError.toException());
+                Toast.makeText(activityContext, "Failed getting data from server.Try again", Toast.LENGTH_SHORT).show();
+
+                // ...
+            }
+        });
+
+    }
+
+
+    private void setUpRecyclerView(List<Event> mDataSet) {
+        mAdapter = new EventsAdapter(mDataSet,  mEventDay);
         recyclerViewEvents.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerViewEvents.setAdapter(mAdapter);
+    }
+
+    private void initRecyclerView() {
+        final List<Event> mDataSet = new ArrayList<>();
+        DatabaseReference ref = mDatabase.getReference("events/" + dayKey);
+
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot eventSnapshot : dataSnapshot.getChildren()) {
+                    // TODO: handle the
+                    Event event = eventSnapshot.getValue(Event.class);
+                    mDataSet.add(event);
+                }
+//                pbOverview.setVisibility(View.GONE);
+                setUpRecyclerView(mDataSet);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting EventDay failed, log a message
+                Log.w(TAG, "loadEventDay:onCancelled", databaseError.toException());
+                // ...
+            }
+        });
+    }
+
+    private void setViews() {
+        pbEventDayLoading.setVisibility(View.GONE);
+        String eventDayDate = mEventDay.getStringDate();
+        String eventDayWeekday = new SimpleDateFormat("EEEE").format(mEventDay.getDate());
+        tvEventDayDate.setText(eventDayDate);
+        tvEventDayWeekday.setText(eventDayWeekday);
     }
 }

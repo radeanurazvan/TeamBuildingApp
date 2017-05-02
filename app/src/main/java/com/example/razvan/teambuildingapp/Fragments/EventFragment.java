@@ -6,13 +6,29 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.razvan.teambuildingapp.Entities.EmployeeEvent;
+import com.example.razvan.teambuildingapp.Entities.Event;
 import com.example.razvan.teambuildingapp.FreeEventsRV.SampleData;
 import com.example.razvan.teambuildingapp.FreeEventsRV.FreeEventsAdapter;
 import com.example.razvan.teambuildingapp.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import org.w3c.dom.Text;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -20,15 +36,31 @@ import butterknife.ButterKnife;
 public class EventFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_EVENTKEY = "eventkey";
+    private static final String ARG_EVENTDAYKEY = "eventdaykey";
+    private static final String ARG_EVENTDATE = "eventdate";
+    private static final String TAG = "EVENTFRAGMENT";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private String eventKey;
+    private String eventDate;
+    private String eventDayKey;
+
+    private FirebaseDatabase mDatabase;
+
+    private Event mEvent;
+
 
     private FreeEventsAdapter mAdapter;
 
+    @BindView(R.id.tv_event_type)
+    TextView tvEventType;
+    @BindView(R.id.tv_event_title)
+    TextView tvEventTitle;
+    @BindView(R.id.tv_event_time_location)
+    TextView tvEventTimeLocation;
+    @BindView(R.id.tv_event_description)
+    TextView tvEventDescription;
     @BindView(R.id.rv_free_events)
     RecyclerView recyclerViewFreeEvents;
 
@@ -40,16 +72,17 @@ public class EventFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     * @param eventKey Event unique key.
      * @return A new instance of fragment EventFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static EventFragment newInstance(String param1, String param2) {
+    public static EventFragment newInstance(String eventDayKey, String eventKey, String eventDate) {
         EventFragment fragment = new EventFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(ARG_EVENTDAYKEY, eventDayKey);
+        args.putString(ARG_EVENTKEY, eventKey);
+        args.putString(ARG_EVENTDATE, eventDate);
+
         fragment.setArguments(args);
         return fragment;
     }
@@ -57,9 +90,11 @@ public class EventFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mDatabase = FirebaseDatabase.getInstance();
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            eventKey = getArguments().getString(ARG_EVENTKEY);
+            eventDayKey = getArguments().getString(ARG_EVENTDAYKEY);
+            eventDate = getArguments().getString(ARG_EVENTDATE);
         }
     }
 
@@ -69,7 +104,7 @@ public class EventFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_event, container, false);
         ButterKnife.bind(this, view);
-        setUpRecyclerView();
+        getEventData();
         return view;
     }
 
@@ -85,8 +120,76 @@ public class EventFragment extends Fragment {
         super.onDetach();
     }
 
-    private void setUpRecyclerView() {
-        mAdapter = new FreeEventsAdapter(SampleData.generateSampleFreeEventsList(), this.getContext());
+    private void getEventData() {
+        final Context activityContext = this.getContext();
+
+        DatabaseReference ref = mDatabase.getReference("events/" + eventDayKey + "/" + eventKey);
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // TODO: handle the
+                mEvent = dataSnapshot.getValue(Event.class);
+                if(mEvent != null){
+                    setViews();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting EventDay failed, log a message
+                Log.w(TAG, "loadEventDay:onCancelled", databaseError.toException());
+                Toast.makeText(activityContext, "Failed getting data from server.Try again", Toast.LENGTH_SHORT).show();
+
+                // ...
+            }
+        });
+
+    }
+
+    private void setViews(){
+        String eventType = mEvent.isMandatory()?"Mandatory":"Free Event";
+        tvEventType.setText(eventType);
+        tvEventTitle.setText(mEvent.getTitle());
+
+        String eventTimeLocation = "";
+
+
+        eventTimeLocation += getArguments().getString(ARG_EVENTDATE) + ", " + mEvent.getTimeRange() +", " + mEvent.getLocation();
+
+        tvEventTimeLocation.setText(eventTimeLocation);
+        tvEventDescription.setText(mEvent.getDescription());
+        if(!mEvent.isMandatory()){
+            initRecyclerView();
+        }
+    }
+
+    private void initRecyclerView(){
+        final List<EmployeeEvent> mDataSet = new ArrayList<>();
+        DatabaseReference ref = mDatabase.getReference("employeeEvents/" + eventKey);
+
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot eventSnapshot : dataSnapshot.getChildren()) {
+                    // TODO: handle the
+                    EmployeeEvent event = eventSnapshot.getValue(EmployeeEvent.class);
+                    mDataSet.add(event);
+                }
+//                pbOverview.setVisibility(View.GONE);
+                setUpRecyclerView(mDataSet);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting EventDay failed, log a message
+                Log.w(TAG, "loadEventDay:onCancelled", databaseError.toException());
+                // ...
+            }
+        });
+    }
+
+    private void setUpRecyclerView(List<EmployeeEvent> mDataSet) {
+        mAdapter = new FreeEventsAdapter(mDataSet, mEvent,getArguments().getString(ARG_EVENTDATE));
         recyclerViewFreeEvents.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerViewFreeEvents.setAdapter(mAdapter);
     }

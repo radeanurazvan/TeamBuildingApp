@@ -1,5 +1,6 @@
 package com.example.razvan.teambuildingapp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -51,68 +52,20 @@ public class NavigationDrawerActivity extends AppCompatActivity
 
     private User user;
 
-    @BindView(R.id.rv_event_days)
-    RecyclerView recyclerViewEventDays;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mAuth = FirebaseAuth.getInstance();
-        mCurrentUser = mAuth.getCurrentUser();
-
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                mCurrentUser = firebaseAuth.getCurrentUser();
-                if (mCurrentUser == null) {
-                    // user mAuth state is changed - user is null
-                    // launch login activity
-                    startActivity(new Intent(NavigationDrawerActivity.this, LogInActivity.class));
-                    finish();
-                }
-            }
-        };
+        initAuth();
 
         setContentView(R.layout.activity_navigation_drawer);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        final TextView tvUsername = (TextView) navigationView.getHeaderView(0).findViewById(R.id.tv_username);
-        if (mCurrentUser != null) {
-            DatabaseReference database = FirebaseDatabase.getInstance().getReference("users");
-            DatabaseReference ref = database.child(mCurrentUser.getUid());
-
-//            Query uidQuery = ref.orderByChild("firebaseuseruid").equalTo(mCurrentUser.getUid());
-            ref.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    user = dataSnapshot.getValue(User.class);
-//                    Log.i(TAG, "User result:"+user);
-                    if (user != null) {
-                        tvUsername.setText(user.name);
-                    }
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    Log.e(TAG, "onCancelled", databaseError.toException());
-                }
-            });
-        }
+        initDrawer();
 
         ButterKnife.bind(this);
-        setUpRecyclerView();
+        replaceFragment(OverviewFragment.newInstance("",""), "Good morning!");
+        //initRecyclerView();
     }
 
     @Override
@@ -161,31 +114,7 @@ public class NavigationDrawerActivity extends AppCompatActivity
         return true;
     }
 
-    private void setUpRecyclerView() {
-        final List<EventDay> mDataSet = new ArrayList<>();
-        DatabaseReference database = FirebaseDatabase.getInstance().getReference("eventDays");
-        database.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot eventDaySnapshot: dataSnapshot.getChildren()) {
-                    // TODO: handle the
-                    EventDay eventDay = eventDaySnapshot.getValue(EventDay.class);
-                    Log.i(TAG, "eventDaySnapshot:"+eventDay);
-                    mDataSet.add(eventDay);
-                }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
-                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
-                // ...
-            }
-        });
-        mAdapter = new EventDaysAdapter(mDataSet, this);
-        recyclerViewEventDays.setLayoutManager(new LinearLayoutManager(this));
-        recyclerViewEventDays.setAdapter(mAdapter);
-    }
 
     private void replaceFragment(@NonNull Fragment fragment, @NonNull String title) {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commitNow();
@@ -195,4 +124,39 @@ public class NavigationDrawerActivity extends AppCompatActivity
     public void signOut() {
         mAuth.signOut();
     }
+
+    private void initAuth(){
+        mAuth = FirebaseAuth.getInstance();
+        mCurrentUser = mAuth.getCurrentUser();
+
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                mCurrentUser = firebaseAuth.getCurrentUser();
+                if (mCurrentUser == null) {
+                    // user mAuth state is changed - user is null
+                    // launch login activity
+                    startActivity(new Intent(NavigationDrawerActivity.this, LogInActivity.class));
+                    finish();
+                }
+            }
+        };
+    }
+
+    private void initDrawer(){
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+    }
+
+
+
+
 }

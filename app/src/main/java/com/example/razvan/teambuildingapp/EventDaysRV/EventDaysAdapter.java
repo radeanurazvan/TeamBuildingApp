@@ -29,9 +29,8 @@ public class EventDaysAdapter extends RecyclerView.Adapter<EventDaysAdapter.Even
     private List<EventDay> mDataSet;
     private NavigationDrawerActivity navigationDrawerActivity;
 
-    public EventDaysAdapter(@NonNull List<EventDay> dataSet, Context context) {
+    public EventDaysAdapter(@NonNull List<EventDay> dataSet) {
         mDataSet = dataSet;
-        navigationDrawerActivity = (NavigationDrawerActivity)context;
     }
 
     // Create new views (invoked by the layout manager)
@@ -40,20 +39,21 @@ public class EventDaysAdapter extends RecyclerView.Adapter<EventDaysAdapter.Even
         final View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_event_day, parent, false);
 
-
-        Log.i("EventDayAdapter", "OnCreateViewHolder called");
         return new EventDayViewHolder(itemView);
     }
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(EventDayViewHolder holder, int position) {
+    public void onBindViewHolder(EventDayViewHolder holder, final int position) {
         final EventDay eventDay = mDataSet.get(position);
         holder.bind(eventDay, position);
+
+        final int dayNumber = holder.getAdapterPosition()+1;
+        navigationDrawerActivity = (NavigationDrawerActivity) holder.btnDay.getContext();
         holder.btnDay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                navigationDrawerActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, EventDayFragment.newInstance("","", "Day "+eventDay.getId())).commitNow();
+                navigationDrawerActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, EventDayFragment.newInstance(eventDay.getId(), dayNumber)).commitNow();
             }
         });
     }

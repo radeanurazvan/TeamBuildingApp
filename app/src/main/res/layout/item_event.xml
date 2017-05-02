@@ -38,4 +38,5 @@
         android:text="Hotel Restaurant"
         android:textColor="#99ffffff"
         android:textSize="14sp" />
+
 </RelativeLayout>

@@ -33,14 +33,14 @@ public class OverviewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_overview);
 
         FirebaseDatabase firebaseInstance = FirebaseDatabase.getInstance();
-        mFirebaseDatabase = firebaseInstance.getReference("attendants");
+        mFirebaseDatabase = firebaseInstance.getReference("eventDays");
 
-        String key = mFirebaseDatabase.child("attendants").push().getKey();
-        EventAttendant attendant = new EventAttendant(key,"Uc9lINVKUaQntu0glAe7YLExuRH3", "Radeanu Razvan", "");
-        Map<String, Object> attendantValues = attendant.toMap();
+        String key = mFirebaseDatabase.child("eventDays").push().getKey();
+        EventDay eventDay = new EventDay(key,new Date());
+        Map<String, Object> eventDayValues = eventDay.toMap();
 
         Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put("/-Kj0bRe6NxmHF78ecbbi/" + key , attendantValues);
+        childUpdates.put("/" + key , eventDayValues);
 
         mFirebaseDatabase.updateChildren(childUpdates);
     }

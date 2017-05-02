@@ -40,6 +40,7 @@
     <string name="logout">Log Out</string>
 
     <string name="description">Description:</string>
+    <string name="attendants">Attendants:</string>
 
     <string name="lipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut tempus vel lectus sed convallis. Pellentesque sollicitudin mauris magna. Vivamus commodo tellus tincidunt tincidunt accumsan. Vestibulum fringilla elementum urna, eget pulvinar risus. Ut ornare convallis mauris, ut blandit felis hendrerit non. </string>
 

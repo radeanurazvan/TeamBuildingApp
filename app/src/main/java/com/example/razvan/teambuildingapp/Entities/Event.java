@@ -3,6 +3,7 @@ package com.example.razvan.teambuildingapp.Entities;
 import com.google.android.gms.common.api.BooleanResult;
 import com.google.firebase.database.Exclude;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,19 +19,19 @@ public class Event {
     private String description;
     private Date startTime;
     private Date endTime;
-    private Boolean isFreeEvent;
+    private Boolean mandatory;
 
     @SuppressWarnings("unused")
     public Event(){}
 
-    public Event(String id, String title, String location, String description, Date startTime, Date endTime, boolean isFreeEvent){
+    public Event(String id, String title, String location, String description, Date startTime, Date endTime, boolean mandatory){
         this.id = id;
         this.title = title;
         this.location = location;
         this.description = description;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.isFreeEvent = isFreeEvent;
+        this.mandatory = mandatory;
     }
 
     public String getId(){
@@ -57,6 +58,17 @@ public class Event {
         return this.endTime;
     }
 
+    public boolean isMandatory(){
+        return this.mandatory;
+    }
+
+    public String getTimeRange(){
+        String eventStartHour = new SimpleDateFormat("k").format(this.getStartTime());
+        String eventEndHour = new SimpleDateFormat("k aaa").format(this.getEndTime());
+
+        return eventStartHour + " - " + eventEndHour;
+    }
+
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
@@ -66,7 +78,7 @@ public class Event {
         result.put("description", description);
         result.put("startTime", startTime);
         result.put("endTime", endTime);
-        result.put("isFreeEvent", isFreeEvent);
+        result.put("mandatory", mandatory);
         return result;
     }
 }

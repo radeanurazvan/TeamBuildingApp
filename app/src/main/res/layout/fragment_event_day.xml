@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:layout_marginTop="?attr/actionBarSize"
     tools:context="com.example.razvan.teambuildingapp.Fragments.EventDayFragment">
 
     <RelativeLayout
@@ -21,8 +20,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Day 2"
-            android:textSize="16dp" />
+            tools:text="Day 2"
+            android:textSize="16sp" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -34,12 +33,13 @@
             android:src="@drawable/ico_arrow_previous" />
 
         <TextView
+            android:id="@+id/tv_event_day_weekday"
             style="@style/whiteSansSerifLight"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:gravity="center"
-            android:text="Tuesday"
+            tools:text="Tuesday"
             android:textSize="40sp" />
 
         <ImageView
@@ -52,12 +52,13 @@
             android:src="@drawable/ico_arrow_next" />
 
         <TextView
+            android:id="@+id/tv_event_day_date"
             style="@style/whiteSansSerifLight"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:gravity="center"
-            android:text="February 9, 2015"
+            tools:text="February 9, 2015"
             android:textColor="#CCffffff" />
 
 
@@ -67,6 +68,12 @@
         style="@style/bgMountains"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
+        <ProgressBar
+            android:id="@+id/pb_event_day_loading"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_events"

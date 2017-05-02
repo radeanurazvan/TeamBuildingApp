@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.razvan.teambuildingapp.Entities.Event;
+import com.example.razvan.teambuildingapp.Entities.EventDay;
 import com.example.razvan.teambuildingapp.Fragments.EventFragment;
 import com.example.razvan.teambuildingapp.NavigationDrawerActivity;
 import com.example.razvan.teambuildingapp.R;
@@ -28,10 +29,12 @@ import butterknife.ButterKnife;
 public class EventsAdapter  extends RecyclerView.Adapter<EventsAdapter.EventViewHolder>{
     private List<Event> mDataSet;
     private NavigationDrawerActivity navigationDrawerActivity;
+    private EventDay mEventDay;
 
-    public EventsAdapter(@NonNull List<Event> dataSet, Context context) {
+    public EventsAdapter(@NonNull List<Event> dataSet,EventDay parentEventDay) {
         mDataSet = dataSet;
-        navigationDrawerActivity = (NavigationDrawerActivity) context;
+
+        this.mEventDay = parentEventDay;
     }
     // Create new views (invoked by the layout manager)
     @Override
@@ -45,13 +48,13 @@ public class EventsAdapter  extends RecyclerView.Adapter<EventsAdapter.EventView
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(EventViewHolder holder, int position) {
-        Event event = mDataSet.get(position);
+        final Event event = mDataSet.get(position);
         holder.bind(event, position);
-
+        navigationDrawerActivity = (NavigationDrawerActivity) holder.tvEventLocation.getContext();
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                navigationDrawerActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, EventFragment.newInstance("","")).commitNow();
+                navigationDrawerActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, EventFragment.newInstance(mEventDay.getId(),event.getId(), mEventDay.getStringDate())).commitNow();
             }
         });
     }
@@ -78,13 +81,12 @@ public class EventsAdapter  extends RecyclerView.Adapter<EventsAdapter.EventView
         }
 
         void bind(@NonNull Event event, int position) {
-            Date startHour= new Date(),endHour = new Date();
             tvEventTitle.setText(event.getTitle());
             tvEventLocation.setText(event.getLocation());
-            String oldstring = "2011-01-18 00:00:00.0";
-            SimpleDateFormat dt = new SimpleDateFormat("k");
 
-            tvEventTime.setText("8 - 10am");
+            String eventStartHour = new SimpleDateFormat("k").format(event.getStartTime());
+            String eventEndHour = new SimpleDateFormat("k aaa").format(event.getEndTime());
+            tvEventTime.setText(eventStartHour + " - " + eventEndHour);
         }
     }
 }

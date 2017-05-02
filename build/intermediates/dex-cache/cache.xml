@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="true"
+        jar="C:\Users\LexGrup\.android\build-cache\fc0bf00c3a5fa4cdef0a3a5f669acf3bd9245efe\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="f5d23793df1e17be9a5ca6b9f2046ce27b563060">
+        <dex dex="E:\fii 2017\Android\Projects\TeamBuildingApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_295620f1e57c9b70fd81c986624286c5ebde3682\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="E:\fii 2017\Android\Projects\TeamBuildingApp\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="510aa6efc159983dfbffa676a0dae37568c0a46f">
+        <dex dex="E:\fii 2017\Android\Projects\TeamBuildingApp\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run_f58db47f56469e062d5fe2f3a447d9999c326dfe\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\LexGrup\.android\build-cache\cc9b14868aadedfb9733c4fd7d21c9cd2bb8c678\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="7113302c965566b66df46c6ca75ea301576114a5">
+        <dex dex="E:\fii 2017\Android\Projects\TeamBuildingApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_7783d3a5ce7cde4538f2f8cd949f990414ed43c0\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\LexGrup\AppData\Local\Android\sdk\extras\m2repository\com\android\support\constraint\constraint-layout-solver\1.0.1\constraint-layout-solver-1.0.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="1ad79631209e77b0a2730fc112b4cc0c66a95132">
+        <dex dex="E:\fii 2017\Android\Projects\TeamBuildingApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\constraint-layout-solver-1.0.1_c1e8befacb6ad7f15ffbc2d52da403c2e7cc94c3\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="E:\fii 2017\Android\Projects\TeamBuildingApp\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="fba74147247cfdac16669e3b47c3d2aa3d68b6d3">
+        <dex dex="E:\fii 2017\Android\Projects\TeamBuildingApp\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_7371994251107e349a289bd06954bd05b5816a24\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\LexGrup\.android\build-cache\6969ba4e1843243b18ffb344eb0cc544464ef6b1\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="c5d103b270b3f3b50d8e6b44aa8e068b0de33426">
+        <dex dex="E:\fii 2017\Android\Projects\TeamBuildingApp\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_6798a0a18e71d4fcdf09da1b2c36e82165930abb\classes.dex" />
+    </item>
+
+</items>

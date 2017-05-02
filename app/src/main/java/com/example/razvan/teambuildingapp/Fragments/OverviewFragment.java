@@ -5,13 +5,24 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
+import com.example.razvan.teambuildingapp.Entities.EventDay;
 import com.example.razvan.teambuildingapp.EventDaysRV.EventDaysAdapter;
 import com.example.razvan.teambuildingapp.EventDaysRV.SampleData;
 import com.example.razvan.teambuildingapp.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,9 +32,12 @@ public class OverviewFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static final String TAG = "OVERVIEW_FRAGMENT";
 
     private EventDaysAdapter mAdapter;
 
+    @BindView(R.id.pb_overview)
+    ProgressBar pbOverview;
     @BindView(R.id.rv_event_days)
     RecyclerView recyclerViewEventDays;
 
@@ -71,7 +85,7 @@ public class OverviewFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_overview, container, false);
         ButterKnife.bind(this, view);
 
-        setUpRecyclerView();
+        initRecyclerView();
         return view;
     }
 
@@ -87,10 +101,34 @@ public class OverviewFragment extends Fragment {
     }
 
 
-    private void setUpRecyclerView() {
-        mAdapter = new EventDaysAdapter(SampleData.generateSampleEventDaysList(), this.getContext());
+    private void setUpRecyclerView(List<EventDay> mDataSet) {
+        mAdapter = new EventDaysAdapter(mDataSet);
         recyclerViewEventDays.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerViewEventDays.setAdapter(mAdapter);
     }
 
+    private void initRecyclerView(){
+        final List<EventDay> mDataSet = new ArrayList<>();
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference("eventDays");
+
+        database.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot eventDaySnapshot: dataSnapshot.getChildren()) {
+                    // TODO: handle the
+                    EventDay eventDay = eventDaySnapshot.getValue(EventDay.class);
+                    mDataSet.add(eventDay);
+                }
+                pbOverview.setVisibility(View.GONE);
+                setUpRecyclerView(mDataSet);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+                // ...
+            }
+        });
+    }
 }

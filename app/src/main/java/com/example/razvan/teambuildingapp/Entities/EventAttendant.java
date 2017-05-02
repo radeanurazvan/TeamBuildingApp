@@ -22,6 +22,14 @@ public class EventAttendant {
         this.photoUrl = photoUrl;
     }
 
+
+    public String getName(){
+        return name;
+    }
+
+    public String getPhotoUrl(){
+        return photoUrl;
+    }
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();

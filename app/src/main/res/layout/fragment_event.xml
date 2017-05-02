@@ -2,7 +2,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="?attr/actionBarSize"
     android:fillViewport="true"
     android:orientation="vertical"
     tools:context="com.example.razvan.teambuildingapp.Fragments.EventFragment">
@@ -23,15 +22,16 @@
             android:paddingTop="4dp">
 
             <TextView
-                android:id="@+id/tv_day_count"
+                android:id="@+id/tv_event_type"
                 style="@style/whiteSansSerifLight"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Mandatory"
-                android:textSize="16dp" />
+                tools:text="Mandatory"
+                android:textSize="16sp" />
 
             <ImageView
+                android:id="@+id/iv_previous_event"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
@@ -41,15 +41,17 @@
                 android:src="@drawable/ico_arrow_previous" />
 
             <TextView
+                android:id="@+id/tv_event_title"
                 style="@style/whiteSansSerifLight"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:gravity="center"
-                android:text="Company Update"
+                tools:text="Company Update"
                 android:textSize="28sp" />
 
             <ImageView
+                android:id="@+id/iv_next_event"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -59,12 +61,13 @@
                 android:src="@drawable/ico_arrow_next" />
 
             <TextView
+                android:id="@+id/tv_event_time_location"
                 style="@style/whiteSansSerifLight"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:gravity="center"
-                android:text="February 9, 2015, 8 - 10am, Hotel Restaurant"
+                tools:text="February 9, 2015, 8 - 10am, Hotel Restaurant"
                 android:textColor="#CCffffff"
                 android:textSize="12sp" />
 
@@ -85,6 +88,7 @@
                 android:textSize="18sp" />
 
             <TextView
+                android:id="@+id/tv_event_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/lipsum" />
@@ -92,7 +96,7 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_free_events"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="20dp">
 
             </android.support.v7.widget.RecyclerView>

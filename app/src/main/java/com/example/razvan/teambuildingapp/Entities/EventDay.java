@@ -2,6 +2,7 @@ package com.example.razvan.teambuildingapp.Entities;
 
 import com.google.firebase.database.Exclude;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,6 +26,10 @@ public class EventDay {
     public String getId(){return  this.id;}
     public Date getDate(){
         return this.date;
+    }
+
+    public String getStringDate(){
+        return new SimpleDateFormat("MMMMMM d, y").format(this.getDate());
     }
 
     @Exclude
