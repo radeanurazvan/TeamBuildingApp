@@ -53,7 +53,7 @@ public class EventDaysAdapter extends RecyclerView.Adapter<EventDaysAdapter.Even
         holder.btnDay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                navigationDrawerActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, EventDayFragment.newInstance(eventDay.getId(), dayNumber)).commitNow();
+                navigationDrawerActivity.getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, EventDayFragment.newInstance(eventDay.getId(), dayNumber)).addToBackStack(null).commit();
             }
         });
     }

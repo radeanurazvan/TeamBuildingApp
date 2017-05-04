@@ -18,6 +18,7 @@ public class EmployeeEvent {
     private String location;
     private String description;
     private String host;
+    private String hostId;
     private Date startTime;
     private Date endTime;
 
@@ -26,11 +27,12 @@ public class EmployeeEvent {
     @SuppressWarnings("unused")
     public EmployeeEvent(){}
 
-    public EmployeeEvent(String id, String title, String location, String description, String host,Date startTime, Date endTime){
+    public EmployeeEvent(String id, String title, String location, String description, String host, String hostId,Date startTime, Date endTime){
         this.id = id;
         this.title = title;
         this.location = location;
         this.host = host;
+        this.hostId = hostId;
         this.description = description;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -65,6 +67,10 @@ public class EmployeeEvent {
         return this.host;
     }
 
+    public String getHostId(){
+        return this.hostId;
+    }
+
     public int getNumberOfAttendants(){return this.numberOfAttendants;}
 
     public String getTimeRange(){
@@ -78,6 +84,12 @@ public class EmployeeEvent {
         return numberOfAttendants + " attendants, hosted by " + host ;
     }
 
+
+
+    public void setNumberOfAttendants(int number){
+        this.numberOfAttendants = number;
+    }
+
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
@@ -85,6 +97,7 @@ public class EmployeeEvent {
         result.put("title", title);
         result.put("location", location);
         result.put("host", host);
+        result.put("hostId", hostId);
         result.put("description", description);
         result.put("startTime", startTime);
         result.put("endTime", endTime);

@@ -119,7 +119,7 @@ public class LogInActivity extends AppCompatActivity {
                             }
                         } else {
                             Intent intent = new Intent(LogInActivity.this, NavigationDrawerActivity.class);
-//                            intent.putExtra(ProfileActivity.KEY_USERNAME, email);
+//                            intent.putExtra(ProfileActivity.KEY_USERNAME, email);x`x`
                             startActivity(intent);
                             finish();
                         }

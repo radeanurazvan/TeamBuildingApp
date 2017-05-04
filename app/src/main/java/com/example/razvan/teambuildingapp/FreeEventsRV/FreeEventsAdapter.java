@@ -1,9 +1,12 @@
 package com.example.razvan.teambuildingapp.FreeEventsRV;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +21,8 @@ import com.example.razvan.teambuildingapp.EventAttendantsRV.EventAttendantsAdapt
 import com.example.razvan.teambuildingapp.Fragments.FreeEventFragment;
 import com.example.razvan.teambuildingapp.NavigationDrawerActivity;
 import com.example.razvan.teambuildingapp.R;
+import com.example.razvan.teambuildingapp.Utils.EventAttendantsUtils;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -37,16 +42,19 @@ import butterknife.ButterKnife;
  * Created by Razvan on 5/1/2017.
  */
 
-public class FreeEventsAdapter extends RecyclerView.Adapter<FreeEventsAdapter.FreeEventViewHolder>{
+public class FreeEventsAdapter extends RecyclerView.Adapter<FreeEventsAdapter.FreeEventViewHolder> {
     private List<EmployeeEvent> mDataSet;
     private NavigationDrawerActivity navigationDrawerActivity;
     private Event mParentEvent;
     private String eventDayDate;
+
     public FreeEventsAdapter(@NonNull List<EmployeeEvent> dataSet, Event parentEvent, String eventDayDate) {
         mDataSet = dataSet;
+        Log.i("TAG", "FreeEventsAdapter has " + getItemCount() +" items");
         mParentEvent = parentEvent;
         this.eventDayDate = eventDayDate;
     }
+
     // Create new views (invoked by the layout manager)
     @Override
     public FreeEventViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -63,13 +71,9 @@ public class FreeEventsAdapter extends RecyclerView.Adapter<FreeEventsAdapter.Fr
         holder.bind(employeeEvent, position);
 
         navigationDrawerActivity = (NavigationDrawerActivity) holder.tvEventLocation.getContext();
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                navigationDrawerActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, FreeEventFragment.newInstance(mParentEvent.getId(), employeeEvent.getId(), eventDayDate)).commitNow();
-            }
-        });
+        setListeners(holder, position);
     }
+
 
     // Return the size of the dataSet (invoked by the layout manager)
     @Override
@@ -136,5 +140,28 @@ public class FreeEventsAdapter extends RecyclerView.Adapter<FreeEventsAdapter.Fr
 //            rvEventAttendants.setLayoutManager(new LinearLayoutManager(tvEventLocation.getContext(), LinearLayoutManager.HORIZONTAL,false));
 //            rvEventAttendants.setAdapter(mAdapter);
 //        }
+    }
+
+    private void setListeners(FreeEventViewHolder holder, int position) {
+        final EmployeeEvent employeeEvent = mDataSet.get(position);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navigationDrawerActivity.getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, FreeEventFragment.newInstance(mParentEvent.getId(), employeeEvent.getId(), eventDayDate)).addToBackStack(null).commit();
+            }
+        });
+
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if(!TextUtils.equals(employeeEvent.getHostId(),FirebaseAuth.getInstance().getCurrentUser().getUid()))
+                    setUpDialog(employeeEvent, navigationDrawerActivity, mParentEvent);
+                return false;
+            }
+        });
+    }
+
+    private void setUpDialog(EmployeeEvent event, Context context, Event mParentEvent) {
+        EventAttendantsUtils.joinEmployeeEvent(mParentEvent.getId(),event, context);
     }
 }

@@ -155,6 +155,7 @@ public class EventDayFragment extends Fragment {
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                mDataSet.clear();
                 for (DataSnapshot eventSnapshot : dataSnapshot.getChildren()) {
                     // TODO: handle the
                     Event event = eventSnapshot.getValue(Event.class);

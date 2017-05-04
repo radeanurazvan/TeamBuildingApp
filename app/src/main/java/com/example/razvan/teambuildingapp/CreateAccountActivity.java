@@ -184,7 +184,7 @@ public class CreateAccountActivity extends AppCompatActivity {
     public void createUser(String email, String name, String birthday, String gender){
         String firebaseUserUID = mAuth.getCurrentUser().getUid();
 
-        User user = new User(firebaseUserUID, email, name, birthday, gender);
+        User user = new User(firebaseUserUID, email, name, birthday, gender, "");
 
         Map<String, Object> userValues = user.toMap();
 

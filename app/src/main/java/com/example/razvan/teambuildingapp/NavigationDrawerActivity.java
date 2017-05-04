@@ -64,7 +64,7 @@ public class NavigationDrawerActivity extends AppCompatActivity
         initDrawer();
 
         ButterKnife.bind(this);
-        replaceFragment(OverviewFragment.newInstance("",""), "Good morning!");
+        replaceFragment(OverviewFragment.newInstance(), "Good morning!");
         //initRecyclerView();
     }
 
@@ -88,7 +88,12 @@ public class NavigationDrawerActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            int backStackCount = getSupportFragmentManager().getBackStackEntryCount();
+            if(backStackCount <= 1){
+                finish();
+            } else {
+                super.onBackPressed();
+            }
         }
     }
 
@@ -102,7 +107,7 @@ public class NavigationDrawerActivity extends AppCompatActivity
         if (id == R.id.nav_home) {
             // Handle the camera action
         } else if (id == R.id.nav_overview) {
-            replaceFragment(OverviewFragment.newInstance("", ""), "Good morning!");
+            replaceFragment(OverviewFragment.newInstance(), "Good morning!");
         } else if (id == R.id.nav_settings) {
             replaceFragment(SettingsFragment.newInstance("", ""), "Settings");
         } else if (id == R.id.nav_logout) {
@@ -117,7 +122,7 @@ public class NavigationDrawerActivity extends AppCompatActivity
 
 
     private void replaceFragment(@NonNull Fragment fragment, @NonNull String title) {
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commitNow();
+        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, fragment).addToBackStack(null).commit();
         getSupportActionBar().setTitle(title);
     }
 
@@ -145,7 +150,10 @@ public class NavigationDrawerActivity extends AppCompatActivity
 
     private void initDrawer(){
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setCameraDistance(0);
+        toolbar.setElevation(0);
         setSupportActionBar(toolbar);
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);

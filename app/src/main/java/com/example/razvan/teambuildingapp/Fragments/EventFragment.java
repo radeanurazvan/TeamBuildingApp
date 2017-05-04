@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,6 +18,7 @@ import com.example.razvan.teambuildingapp.Entities.EmployeeEvent;
 import com.example.razvan.teambuildingapp.Entities.Event;
 import com.example.razvan.teambuildingapp.FreeEventsRV.SampleData;
 import com.example.razvan.teambuildingapp.FreeEventsRV.FreeEventsAdapter;
+import com.example.razvan.teambuildingapp.NavigationDrawerActivity;
 import com.example.razvan.teambuildingapp.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -32,6 +34,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class EventFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
@@ -63,6 +66,14 @@ public class EventFragment extends Fragment {
     TextView tvEventDescription;
     @BindView(R.id.rv_free_events)
     RecyclerView recyclerViewFreeEvents;
+    @BindView(R.id.btn_create_event)
+    Button btnCreateEvent;
+
+    @OnClick(R.id.btn_create_event)
+    public void openCreateEventFragment(){
+        NavigationDrawerActivity navigationDrawerActivity = (NavigationDrawerActivity) getContext();
+        navigationDrawerActivity.getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, CreateEmployeeEventFragment.newInstance(mEvent.getId())).addToBackStack(null).commit();
+    }
 
     public EventFragment() {
         // Required empty public constructor
@@ -170,8 +181,8 @@ public class EventFragment extends Fragment {
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                mDataSet.clear();
                 for (DataSnapshot eventSnapshot : dataSnapshot.getChildren()) {
-                    // TODO: handle the
                     EmployeeEvent event = eventSnapshot.getValue(EmployeeEvent.class);
                     mDataSet.add(event);
                 }

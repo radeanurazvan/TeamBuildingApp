@@ -54,7 +54,7 @@ public class EventsAdapter  extends RecyclerView.Adapter<EventsAdapter.EventView
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                navigationDrawerActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, EventFragment.newInstance(mEventDay.getId(),event.getId(), mEventDay.getStringDate())).commitNow();
+                navigationDrawerActivity.getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, EventFragment.newInstance(mEventDay.getId(),event.getId(), mEventDay.getStringDate())).addToBackStack(null).commit();
             }
         });
     }

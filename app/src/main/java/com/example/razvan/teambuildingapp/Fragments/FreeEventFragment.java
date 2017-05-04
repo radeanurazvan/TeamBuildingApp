@@ -4,8 +4,10 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +21,8 @@ import com.example.razvan.teambuildingapp.Entities.Event;
 import com.example.razvan.teambuildingapp.Entities.EventAttendant;
 import com.example.razvan.teambuildingapp.EventAttendantsRV.EventAttendantsAdapter;
 import com.example.razvan.teambuildingapp.R;
+import com.example.razvan.teambuildingapp.Utils.EventAttendantsUtils;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -46,11 +50,14 @@ public class FreeEventFragment extends Fragment {
     private String thisEventKey;
     private String eventDayDate;
 
+    private EmployeeEvent thisEvent;
+
     private FirebaseDatabase mDatabase;
 
     private EventAttendantsAdapter mAdapter;
 
-
+    @BindView(R.id.btn_join)
+    Button btnJoin;
     @BindView(R.id.tv_event_host)
     TextView tvEventHost;
     @BindView(R.id.tv_event_title)
@@ -101,7 +108,7 @@ public class FreeEventFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_free_event, container, false);
-        ButterKnife.bind(this,view);
+        ButterKnife.bind(this, view);
         // Inflate the layout for this fragment
         getEventData();
         return view;
@@ -127,13 +134,27 @@ public class FreeEventFragment extends Fragment {
         String node = "employeeEvents/" + parentEventKey + "/" + thisEventKey;
 //        Log.i(TAG, "get event node: "+node);
         DatabaseReference ref = mDatabase.getReference(node);
+
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // TODO: handle the
-                EmployeeEvent event = dataSnapshot.getValue(EmployeeEvent.class);
+                final EmployeeEvent event = dataSnapshot.getValue(EmployeeEvent.class);
+                thisEvent = event;
                 if (event != null) {
                     setViews(event);
+                    Log.i("eventhostid", event.getHostId() + " == "+FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    if (!TextUtils.equals(event.getHostId(),FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                        EventAttendantsUtils.setEventButtonText(event, btnJoin);
+                        btnJoin.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                EventAttendantsUtils.joinEmployeeEvent(parentEventKey, event, getContext());
+                            }
+                        });
+                    } else {
+                        btnJoin.setVisibility(View.GONE);
+                    }
                 }
             }
 
@@ -150,7 +171,7 @@ public class FreeEventFragment extends Fragment {
     }
 
     private void setViews(EmployeeEvent event) {
-        tvEventHost.setText("Event hosted by "+event.getHost());
+        tvEventHost.setText("Event hosted by " + event.getHost());
         tvEventTitle.setText(event.getTitle());
         tvEventTimeLocation.setText(eventDayDate + ", " + event.getTimeRange() + ", " + event.getLocation());
         tvEventDescription.setText(event.getDescription());
@@ -158,7 +179,7 @@ public class FreeEventFragment extends Fragment {
         initRecyclerView();
     }
 
-    private void initRecyclerView(){
+    private void initRecyclerView() {
         final Context activityContext = this.getContext();
         final List<EventAttendant> mDataSet = new ArrayList<EventAttendant>();
         String node = "attendants/" + thisEventKey;
@@ -166,6 +187,8 @@ public class FreeEventFragment extends Fragment {
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                EventAttendantsUtils.setEventButtonText(thisEvent, btnJoin);
+                mDataSet.clear();
                 for (DataSnapshot eventAttendantSnapshot : dataSnapshot.getChildren()) {
                     EventAttendant attendant = eventAttendantSnapshot.getValue(EventAttendant.class);
                     mDataSet.add(attendant);
@@ -185,9 +208,9 @@ public class FreeEventFragment extends Fragment {
         });
     }
 
-    private void setUpRecyclerView(List<EventAttendant> mDataSet){
+    private void setUpRecyclerView(List<EventAttendant> mDataSet) {
         mAdapter = new EventAttendantsAdapter(mDataSet);
-        recyclerViewEventAttendants.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerViewEventAttendants.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         recyclerViewEventAttendants.setAdapter(mAdapter);
     }
 }
