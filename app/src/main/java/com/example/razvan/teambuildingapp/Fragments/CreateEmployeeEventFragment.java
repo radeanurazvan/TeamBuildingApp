@@ -12,12 +12,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextClock;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.razvan.teambuildingapp.Entities.EmployeeEvent;
+import com.example.razvan.teambuildingapp.Entities.Event;
 import com.example.razvan.teambuildingapp.Entities.User;
 import com.example.razvan.teambuildingapp.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,6 +28,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -42,10 +45,10 @@ import butterknife.ButterKnife;
 public class CreateEmployeeEventFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARENTEVENTKEY = "ARG_PARENTEVENTKEY";
+    private static final String ARG_PARENTEVENT = "ARG_PARENTEVENT";
 
     // TODO: Rename and change types of parameters
-    private String mParentEventKey;
+    private Event mParentEvent;
 
     @BindView(R.id.et_title)
     EditText etTitle;
@@ -59,6 +62,8 @@ public class CreateEmployeeEventFragment extends Fragment {
     TextView tvEndTime;
     @BindView(R.id.btn_submit)
     Button btnSubmit;
+    @BindView(R.id.pb_creating_event)
+    ProgressBar pbCreatingEvent;
 
     public CreateEmployeeEventFragment() {
         // Required empty public constructor
@@ -68,13 +73,15 @@ public class CreateEmployeeEventFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param mParentEventKey parentEventKey
+     * @param mParentEvent parentEvent
      * @return A new instance of fragment CreateEmployeeEventFragment.
      */
-    public static CreateEmployeeEventFragment newInstance(String mParentEventKey) {
+    public static CreateEmployeeEventFragment newInstance(Event mParentEvent) {
         CreateEmployeeEventFragment fragment = new CreateEmployeeEventFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARENTEVENTKEY, mParentEventKey);
+        Gson mGson = new Gson();
+        String jsonParentEvent = mGson.toJson(mParentEvent);
+        args.putString(ARG_PARENTEVENT, jsonParentEvent);
         fragment.setArguments(args);
         return fragment;
     }
@@ -82,8 +89,10 @@ public class CreateEmployeeEventFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Gson mGson = new Gson();
         if (getArguments() != null) {
-            mParentEventKey = getArguments().getString(ARG_PARENTEVENTKEY);
+            String jsonParentEvent = getArguments().getString(ARG_PARENTEVENT);
+            mParentEvent = mGson.fromJson(jsonParentEvent, Event.class);
         }
     }
 
@@ -122,6 +131,8 @@ public class CreateEmployeeEventFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if(isFormValidated()){
+                    pbCreatingEvent.setVisibility(View.VISIBLE);
+                    btnSubmit.setEnabled(false);
                     initCreateEvent();
                 }
             }
@@ -142,7 +153,10 @@ public class CreateEmployeeEventFragment extends Fragment {
                 TimePickerDialog mTimePicker = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                        tv.setText( selectedHour + ":" + selectedMinute);
+                        String newSelectedMinute = Integer.toString(selectedMinute);
+                        if(selectedMinute < 10)
+                            newSelectedMinute = "0"+newSelectedMinute;
+                        tv.setText( selectedHour + ":" + newSelectedMinute);
                     }
                 }, hour, minute, true);//Yes 24 hour time
                 mTimePicker.setTitle("Select Time");
@@ -184,6 +198,27 @@ public class CreateEmployeeEventFragment extends Fragment {
             return false;
         }
 
+        SimpleDateFormat formatter = new SimpleDateFormat("H:m");
+        try{
+            Date startTimeDate = formatter.parse(startTime);
+            Date endTimeDate = formatter.parse(endTime);
+            if (startTimeDate.compareTo(endTimeDate)>0){
+                Toast.makeText(getContext(), "End time must be greater than start time!",Toast.LENGTH_SHORT).show();
+                return false;
+            }
+
+            String parentEventStartHour = new SimpleDateFormat("H:m").format(mParentEvent.getStartTime());
+            String parentEventEndHour = new SimpleDateFormat("H:m").format(mParentEvent.getEndTime());
+            Date parentStartTimeDate = formatter.parse(parentEventStartHour);
+            Date parentEndTimeDate = formatter.parse(parentEventEndHour);
+            if (parentStartTimeDate.compareTo(startTimeDate)>0 || parentEndTimeDate.compareTo(endTimeDate)<0){
+                Toast.makeText(getContext(), "Start time and end time must be between parent's time range!",Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        } catch (ParseException e){
+                e.printStackTrace();
+        }
+
         return true;
     }
 
@@ -214,14 +249,14 @@ public class CreateEmployeeEventFragment extends Fragment {
     }
 
     private void createEvent(User user){
-        Log.i("create event", user.toString());
+
         String title = etTitle.getText().toString();
         String location = etLocation.getText().toString();
         String description = etDescription.getText().toString();
         String startTime = tvStartTime.getText().toString();
         String endTime = tvEndTime.getText().toString();
 
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("employeeEvents").child(mParentEventKey);
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("employeeEvents").child(mParentEvent.getId());
         String key = ref.push().getKey();
 
         Date startTimeDate = null;
@@ -236,7 +271,6 @@ public class CreateEmployeeEventFragment extends Fragment {
         EmployeeEvent event = new EmployeeEvent(key, title, location, description, user.getName(),user.getFirebaseUserUID(), startTimeDate, endTimeDate);
 
         ref.child(key).setValue(event);
-
 //        Map<String, Object> eventValues = event.toMap();
 //
 //        Map<String, Object> childUpdates = new HashMap<>();

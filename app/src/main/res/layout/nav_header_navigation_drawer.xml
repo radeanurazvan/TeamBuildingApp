@@ -13,17 +13,26 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
-        android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:layout_gravity="center"
-        app:srcCompat="@android:drawable/sym_def_app_icon" />
+        android:src="@drawable/ico_image" />
 
-    <TextView
-        android:id="@+id/tv_username"
+    <ProgressBar
+        android:id="@+id/pb_loading_avatar"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center" />
+
+    <ImageView
+        android:id="@+id/iv_avatar"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_gravity="center" />
+
+
+    <View
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 </LinearLayout>

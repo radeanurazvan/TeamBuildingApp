@@ -1,6 +1,5 @@
 package com.example.razvan.teambuildingapp.EventsRV;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,13 +9,12 @@ import android.widget.TextView;
 
 import com.example.razvan.teambuildingapp.Entities.Event;
 import com.example.razvan.teambuildingapp.Entities.EventDay;
-import com.example.razvan.teambuildingapp.Fragments.EventFragment;
+import com.example.razvan.teambuildingapp.Fragments.EventPager.EventFragment;
+import com.example.razvan.teambuildingapp.Fragments.EventPager.EventPager;
 import com.example.razvan.teambuildingapp.NavigationDrawerActivity;
 import com.example.razvan.teambuildingapp.R;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -47,14 +45,14 @@ public class EventsAdapter  extends RecyclerView.Adapter<EventsAdapter.EventView
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(EventViewHolder holder, int position) {
+    public void onBindViewHolder(EventViewHolder holder, final int position) {
         final Event event = mDataSet.get(position);
         holder.bind(event, position);
         navigationDrawerActivity = (NavigationDrawerActivity) holder.tvEventLocation.getContext();
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                navigationDrawerActivity.getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, EventFragment.newInstance(mEventDay.getId(),event.getId(), mEventDay.getStringDate())).addToBackStack(null).commit();
+                navigationDrawerActivity.getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, EventPager.newInstance(mEventDay, position),"PAGER_EVENT").addToBackStack(null).commit();
             }
         });
     }

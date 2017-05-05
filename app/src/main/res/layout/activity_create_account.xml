@@ -41,7 +41,8 @@
                 android:gravity="center"
                 android:text="@string/create_account"
                 android:textColor="@color/white"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:id="@+id/textView" />
 
             <ImageView
                 android:id="@+id/ico_submit"
@@ -54,10 +55,9 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:src="@drawable/ico_image" />
+                android:src="@drawable/ico_image"
+                android:layout_below="@+id/textView"
+                android:layout_centerHorizontal="true" />
 
 
         </RelativeLayout>

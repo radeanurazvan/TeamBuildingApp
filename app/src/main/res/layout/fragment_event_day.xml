@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.razvan.teambuildingapp.Fragments.EventDayFragment">
+    tools:context="com.example.razvan.teambuildingapp.Fragments.EventDayPager.EventDayFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -20,10 +20,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            tools:text="Day 2"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            tools:text="Day 2" />
 
         <ImageView
+            android:id="@+id/iv_previous_day"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -39,10 +40,11 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:gravity="center"
-            tools:text="Tuesday"
-            android:textSize="40sp" />
+            android:textSize="40sp"
+            tools:text="Tuesday" />
 
         <ImageView
+            android:id="@+id/iv_next_day"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -58,8 +60,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:gravity="center"
-            tools:text="February 9, 2015"
-            android:textColor="#CCffffff" />
+            android:textColor="#CCffffff"
+            tools:text="February 9, 2015" />
 
 
     </RelativeLayout>
@@ -67,13 +69,14 @@
     <LinearLayout
         style="@style/bgMountains"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <ProgressBar
             android:id="@+id/pb_event_day_loading"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            />
+            android:layout_gravity="center" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_events"
@@ -84,7 +87,6 @@
         </android.support.v7.widget.RecyclerView>
 
     </LinearLayout>
-
 
 
 </LinearLayout>

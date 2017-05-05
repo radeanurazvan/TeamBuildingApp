@@ -1,5 +1,7 @@
 package com.example.razvan.teambuildingapp.Entities;
 
+import android.util.Log;
+
 import com.google.firebase.database.Exclude;
 
 import java.text.SimpleDateFormat;
@@ -74,9 +76,17 @@ public class EmployeeEvent {
     public int getNumberOfAttendants(){return this.numberOfAttendants;}
 
     public String getTimeRange(){
-        String eventStartHour = new SimpleDateFormat("k").format(this.getStartTime());
-        String eventEndHour = new SimpleDateFormat("k aaa").format(this.getEndTime());
+        String startTimeformat,endTimeFormat;
+        startTimeformat = endTimeFormat = "k";
+        if(getStartTime().getMinutes() != 0){
+            startTimeformat = "k:mm";
+        }
+        if(getEndTime().getMinutes() != 0){
+            endTimeFormat = "k:mm";
+        }
 
+        String eventStartHour = new SimpleDateFormat(startTimeformat).format(getStartTime());
+        String eventEndHour = new SimpleDateFormat(endTimeFormat).format(getEndTime());
         return eventStartHour + " - " + eventEndHour;
     }
 

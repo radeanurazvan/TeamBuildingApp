@@ -129,7 +129,6 @@ public class FreeEventFragment extends Fragment {
     }
 
     private void getEventData() {
-        final Context activityContext = this.getContext();
 
         String node = "employeeEvents/" + parentEventKey + "/" + thisEventKey;
 //        Log.i(TAG, "get event node: "+node);
@@ -162,7 +161,7 @@ public class FreeEventFragment extends Fragment {
             public void onCancelled(DatabaseError databaseError) {
                 // Getting EventDay failed, log a message
                 Log.w(TAG, "loadEventDay:onCancelled", databaseError.toException());
-                Toast.makeText(activityContext, "Failed getting data from server.Try again", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(activityContext, "Failed getting data from server.Try again", Toast.LENGTH_SHORT).show();
 
                 // ...
             }
@@ -180,7 +179,6 @@ public class FreeEventFragment extends Fragment {
     }
 
     private void initRecyclerView() {
-        final Context activityContext = this.getContext();
         final List<EventAttendant> mDataSet = new ArrayList<EventAttendant>();
         String node = "attendants/" + thisEventKey;
         DatabaseReference ref = mDatabase.getReference(node);
@@ -201,7 +199,7 @@ public class FreeEventFragment extends Fragment {
             public void onCancelled(DatabaseError databaseError) {
                 // Getting EventDay failed, log a message
                 Log.w(TAG, "loadEventDay:onCancelled", databaseError.toException());
-                Toast.makeText(activityContext, "Failed getting data from server.Try again", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(activityContext, "Failed getting data from server.Try again", Toast.LENGTH_SHORT).show();
 
                 // ...
             }

@@ -63,9 +63,17 @@ public class Event {
     }
 
     public String getTimeRange(){
-        String eventStartHour = new SimpleDateFormat("k").format(this.getStartTime());
-        String eventEndHour = new SimpleDateFormat("k aaa").format(this.getEndTime());
+        String startTimeformat,endTimeFormat;
+        startTimeformat = endTimeFormat = "k";
+        if(getStartTime().getMinutes() != 0){
+            startTimeformat = "k:mm";
+        }
+        if(getEndTime().getMinutes() != 0){
+            endTimeFormat = "k:mm";
+        }
 
+        String eventStartHour = new SimpleDateFormat(startTimeformat).format(this.getStartTime());
+        String eventEndHour = new SimpleDateFormat(endTimeFormat).format(this.getEndTime());
         return eventStartHour + " - " + eventEndHour;
     }
 

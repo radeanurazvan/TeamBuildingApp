@@ -18,6 +18,7 @@ import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.example.razvan.teambuildingapp.Entities.EventAttendant;
 import com.example.razvan.teambuildingapp.NavigationDrawerActivity;
 import com.example.razvan.teambuildingapp.R;
+import com.example.razvan.teambuildingapp.Utils.CommonUtilities;
 
 import org.w3c.dom.Text;
 
@@ -81,19 +82,7 @@ public class EventAttendantsAdapter extends RecyclerView.Adapter<EventAttendants
                 picURL = attendant.getPhotoUrl();
             }
             tvAttendantName.setText(attendant.getName());
-            Glide.with(context)
-                    .load(picURL)
-                    .asBitmap()
-                    .centerCrop()
-                    .into(new BitmapImageViewTarget(ivAttendantPic) {
-                        @Override
-                        protected void setResource(Bitmap resource) {
-                            RoundedBitmapDrawable circularBitmapDrawable =
-                                    RoundedBitmapDrawableFactory.create(context.getResources(), resource);
-                            circularBitmapDrawable.setCircular(true);
-                            ivAttendantPic.setImageDrawable(circularBitmapDrawable);
-                        }
-            });
+            CommonUtilities.setAvatar(context,picURL,ivAttendantPic);
         }
     }
 }

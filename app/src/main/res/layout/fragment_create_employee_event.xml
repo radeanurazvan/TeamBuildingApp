@@ -13,11 +13,22 @@
         android:background="@color/colorPrimary"
         android:orientation="vertical">
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:src="@android:drawable/sym_def_app_icon" />
+            android:layout_weight="1"
+            android:src="@drawable/ico_image" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
 
     </LinearLayout>
@@ -81,7 +92,6 @@
             android:drawableStart="@drawable/ico_event_end"
             android:text="@string/end_time" />
 
-
         <Button
             android:id="@+id/btn_submit"
             android:layout_width="match_parent"
@@ -90,8 +100,15 @@
             android:background="@color/colorPrimary"
             android:fontFamily="sans-serif-light"
             android:padding="10dp"
-            android:text="@string/submit"
+            android:text="@string/create_event"
             android:textColor="@color/white" />
+
+        <ProgressBar
+            android:id="@+id/pb_creating_event"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:visibility="gone" />
 
 
     </LinearLayout>

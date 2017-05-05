@@ -4,7 +4,8 @@
     android:layout_height="wrap_content"
     android:background="@drawable/border_bottom_transparent"
     android:orientation="vertical"
-    android:paddingBottom="10dp">
+    android:paddingBottom="10dp"
+    android:paddingTop="10dp">
 
     <TextView
         android:id="@+id/tv_free_event_title"
@@ -37,12 +38,12 @@
         android:textSize="14sp" />
 
     <TextView
-        style="@style/whiteSansSerifLight"
         android:id="@+id/tv_free_event_stats"
+        style="@style/whiteSansSerifLight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#99ffffff"
-        android:layout_below="@id/tv_free_event_location"/>
+        android:layout_below="@id/tv_free_event_location"
+        android:textColor="#99ffffff" />
 
 
 </RelativeLayout>

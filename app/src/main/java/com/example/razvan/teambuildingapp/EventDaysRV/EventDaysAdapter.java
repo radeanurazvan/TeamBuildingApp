@@ -4,14 +4,13 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.razvan.teambuildingapp.Entities.EventDay;
-import com.example.razvan.teambuildingapp.Fragments.EventDayFragment;
+import com.example.razvan.teambuildingapp.Fragments.EventDayPager.EventDayPager;
 import com.example.razvan.teambuildingapp.NavigationDrawerActivity;
 import com.example.razvan.teambuildingapp.R;
 
@@ -53,7 +52,7 @@ public class EventDaysAdapter extends RecyclerView.Adapter<EventDaysAdapter.Even
         holder.btnDay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                navigationDrawerActivity.getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, EventDayFragment.newInstance(eventDay.getId(), dayNumber)).addToBackStack(null).commit();
+                navigationDrawerActivity.getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, EventDayPager.newInstance(position), "PAGER_EVENT_DAY").addToBackStack(null).commit();
             }
         });
     }

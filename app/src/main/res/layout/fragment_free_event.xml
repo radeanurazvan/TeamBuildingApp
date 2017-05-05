@@ -1,112 +1,104 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
     android:orientation="vertical">
 
-    <LinearLayout
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="90dp"
+        android:background="@color/colorPrimary"
+        android:paddingBottom="5dp"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:paddingTop="4dp">
 
-        <!-- TODO: Update blank fragment layout -->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="90dp"
-            android:background="@color/colorPrimary"
-            android:paddingBottom="5dp"
-            android:paddingLeft="12dp"
-            android:paddingRight="12dp"
-            android:paddingTop="4dp">
-
-            <TextView
-                android:id="@+id/tv_event_host"
-                style="@style/whiteSansSerifLight"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textSize="14sp"
-                tools:text="Event hosted by Radeanu Razvan-Valentin" />
-
-            <TextView
-                android:id="@+id/tv_event_title"
-                style="@style/whiteSansSerifLight"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:gravity="center"
-                android:textSize="28sp"
-                tools:text="Poker Night" />
-
-
-            <TextView
-                android:id="@+id/tv_event_time_location"
-                style="@style/whiteSansSerifLight"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:gravity="center"
-                android:text="February 9, 2015, 18 - 20pm, Room 101"
-                android:textColor="#CCffffff"
-                android:textSize="12sp" />
-
-
-        </RelativeLayout>
-
-        <LinearLayout
-            style="@style/bgMountains"
+        <TextView
+            android:id="@+id/tv_event_host"
+            style="@style/whiteSansSerifLight"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="12dp">
+            android:gravity="center"
+            android:textSize="14sp"
+            tools:text="Event hosted by Radeanu Razvan-Valentin" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+        <TextView
+            android:id="@+id/tv_event_title"
+            style="@style/whiteSansSerifLight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:textSize="28sp"
+            tools:text="Poker Night" />
 
-                <TextView
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/description"
-                    android:textSize="18sp" />
 
-                <Button
-                    android:id="@+id/btn_join"
-                    android:layout_height="30dp"
-                    android:fontFamily="sans-serif-light"
-                    android:textColor="@color/white"
-                    android:background="@color/colorPrimary"
-                    android:layout_width="wrap_content"
-                    tools:text="Join"/>
+        <TextView
+            android:id="@+id/tv_event_time_location"
+            style="@style/whiteSansSerifLight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:gravity="center"
+            android:text="February 9, 2015, 18 - 20pm, Room 101"
+            android:textColor="#CCffffff"
+            android:textSize="12sp" />
 
-            </LinearLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        style="@style/bgMountains"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="12dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/tv_event_description"
-                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                tools:text="@string/lipsum" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="@string/attendants"
+                android:text="@string/description"
                 android:textSize="18sp" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_event_attendants"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp">
-
-            </android.support.v7.widget.RecyclerView>
+            <Button
+                android:id="@+id/btn_join"
+                android:layout_height="30dp"
+                android:fontFamily="sans-serif-light"
+                android:textColor="@color/white"
+                android:background="@color/colorPrimary"
+                android:layout_width="wrap_content"
+                tools:text="Join"/>
 
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/tv_event_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="@string/lipsum" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/attendants"
+            android:textSize="18sp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_event_attendants"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
+
+        </android.support.v7.widget.RecyclerView>
+
     </LinearLayout>
 
-</ScrollView>
+</LinearLayout>

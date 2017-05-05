@@ -1,6 +1,7 @@
 package com.example.razvan.teambuildingapp;
 
 import android.content.Intent;
+import android.media.Image;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -56,6 +58,10 @@ public class CreateAccountActivity extends AppCompatActivity {
     public TextView genderTextView;
     @BindView(R.id.pb_register_loading)
     ProgressBar pbLoading;
+    @BindView(R.id.ico_back)
+    ImageView ivBack;
+    @BindView(R.id.tv_sign_in)
+    TextView tvSignIn;
 
     @OnClick(R.id.ico_submit)
     public void submitForm(){
@@ -72,6 +78,16 @@ public class CreateAccountActivity extends AppCompatActivity {
     @OnClick(R.id.tv_gender)
     public void performSpinnerClick() {
         genderSpinner.performClick();
+    }
+
+    @OnClick(R.id.tv_sign_in)
+    public void startSignInActivity(){
+        startActivity(new Intent(CreateAccountActivity.this, LogInActivity.class));
+    }
+
+    @OnClick(R.id.ico_back)
+    public void goBack(){
+        finish();
     }
 
     public String spinner_item;
@@ -92,10 +108,7 @@ public class CreateAccountActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.array_gender, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        genderSpinner.setAdapter(adapter);
+        initSpinner();
         mAuth = FirebaseAuth.getInstance();
 
         FirebaseDatabase firebaseInstance = FirebaseDatabase.getInstance();
@@ -193,5 +206,12 @@ public class CreateAccountActivity extends AppCompatActivity {
 
         mFirebaseDatabase.updateChildren(childUpdates);
 
+    }
+
+    private void initSpinner(){
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.array_gender, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        genderSpinner.setAdapter(adapter);
     }
 }

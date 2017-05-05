@@ -19,6 +19,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -90,9 +91,9 @@ public class OverviewFragment extends Fragment {
 
     private void initRecyclerView(){
         final List<EventDay> mDataSet = new ArrayList<>();
-        DatabaseReference database = FirebaseDatabase.getInstance().getReference("eventDays");
+        Query query = FirebaseDatabase.getInstance().getReference("eventDays").orderByChild("date/date");
 
-        database.addValueEventListener(new ValueEventListener() {
+        query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 mDataSet.clear();
@@ -107,8 +108,8 @@ public class OverviewFragment extends Fragment {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
-                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+                // Getting EventDay failed, log a message
+                Log.w(TAG, "loadEventDay:onCancelled", databaseError.toException());
                 // ...
             }
         });
